@@ -49,11 +49,10 @@ CORE_PRODUCT_NAME=hiddify-core
 CORE_NAME=hiddify-lib
 LIB_NAME=hiddify-core
 
-ifeq ($(CHANNEL),prod)
-	CORE_URL=https://github.com/hiddify/hiddify-core/releases/download/v$(core.version)
-else
-	CORE_URL=https://github.com/hiddify/hiddify-core/releases/download/draft
-endif
+# SpriteNet: always use the pinned core from dependencies.properties. Upstream's dev channel
+# downloads hiddify-core's moving "draft" release, whose API no longer matches the Kotlin code
+# (e.g. ConnectionOwner.androidPackageNames, PlatformInterface.cancelNotification).
+CORE_URL=https://github.com/hiddify/hiddify-core/releases/download/v$(core.version)
 
 ifeq ($(CHANNEL),prod)
 	TARGET=lib/main_prod.dart
