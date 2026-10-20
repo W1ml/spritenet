@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hiddify/core/theme/app_theme_mode.dart';
 import 'package:hiddify/core/theme/theme_extensions.dart';
+import 'package:hiddify/gen/fonts.gen.dart';
 
 /// SpriteNet "Deep Matte Cyberpunk" palette: matte dark planes, neon lime accents.
 abstract class SpriteNetColors {
@@ -78,11 +79,25 @@ class AppTheme {
         foregroundColor: SpriteNetColors.textPrimary,
         elevation: 0,
         scrolledUnderElevation: 0,
+        titleTextStyle: TextStyle(
+          fontFamily: FontFamily.russoOne,
+          fontSize: 20,
+          letterSpacing: .5,
+          color: SpriteNetColors.textPrimary,
+        ),
       ),
       cardTheme: const CardThemeData(
         color: SpriteNetColors.surface,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(18)),
+          side: BorderSide(color: SpriteNetColors.outline),
+        ),
+      ),
+      listTileTheme: const ListTileThemeData(
+        iconColor: SpriteNetColors.lime,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14))),
       ),
       dialogTheme: const DialogThemeData(
         backgroundColor: SpriteNetColors.surface,
@@ -92,10 +107,24 @@ class AppTheme {
         backgroundColor: SpriteNetColors.surface,
         surfaceTintColor: Colors.transparent,
       ),
-      navigationBarTheme: const NavigationBarThemeData(
+      navigationBarTheme: NavigationBarThemeData(
         backgroundColor: SpriteNetColors.surface,
         surfaceTintColor: Colors.transparent,
-        indicatorColor: Color(0xFF2A3D12),
+        indicatorColor: const Color(0xFF2A3D12),
+        indicatorShape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+        height: 68,
+        labelTextStyle: WidgetStateProperty.resolveWith(
+          (states) => TextStyle(
+            fontSize: 12,
+            fontWeight: states.contains(WidgetState.selected) ? FontWeight.w600 : FontWeight.w400,
+            color: states.contains(WidgetState.selected) ? SpriteNetColors.lime : SpriteNetColors.textSecondary,
+          ),
+        ),
+        iconTheme: WidgetStateProperty.resolveWith(
+          (states) => IconThemeData(
+            color: states.contains(WidgetState.selected) ? SpriteNetColors.lime : SpriteNetColors.textSecondary,
+          ),
+        ),
       ),
       navigationRailTheme: const NavigationRailThemeData(
         backgroundColor: SpriteNetColors.surface,

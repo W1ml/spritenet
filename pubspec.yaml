@@ -4,7 +4,7 @@
 name: hiddify
 description: "SpriteNet VPN Client"
 publish_to: "none"
-version: 4.1.2+40102
+version: 0.2.0+40200
 
 environment:
   sdk: ^3.10.4
@@ -170,6 +170,10 @@ flutter:
     - family: Emoji
       fonts:
         - asset: assets/fonts/Emoji.ttf
+    # SpriteNet display font (SIL Open Font License, see assets/fonts/RussoOne-OFL.txt).
+    - family: RussoOne
+      fonts:
+        - asset: assets/fonts/RussoOne-Regular.ttf
 
 flutter_gen:
   output: lib/gen/

@@ -21,6 +21,9 @@ class AppInfoEntity with _$AppInfoEntity {
 
   String get presentVersion => environment == Environment.prod ? version : "$version ${environment.name}";
 
+  /// Version for the home header: "0.2.0" is shown as "0.2", without the channel suffix.
+  String get shortVersion => version.replaceFirst(RegExp(r'\.0$'), '');
+
   /// formats app info for sharing
   String format() =>
       '''
