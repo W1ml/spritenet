@@ -134,6 +134,8 @@ class _SpriteNavBar extends StatelessWidget {
           boxShadow: const [BoxShadow(color: Colors.black54, blurRadius: 18, offset: Offset(0, 6))],
         ),
         child: Row(
+          // Stretch so the selected pill fills the bar height instead of hugging its label.
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             for (final (index, action) in actions.indexed)
               Expanded(
