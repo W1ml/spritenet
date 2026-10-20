@@ -4,7 +4,7 @@ import 'package:hiddify/utils/utils.dart';
 
 abstract class Constants {
   static const appName = "SpriteNet";
-  static const telegramBotUrl = "https://t.me/DsitWork";
+  static const telegramBotUrl = "https://t.me/absolute_popi_bot";
   static const deepLinkScheme = "spritenet";
   static const githubUrl = "https://github.com/hiddify/hiddify-next";
   static const licenseUrl = "https://github.com/hiddify/hiddify-next?tab=License-1-ov-file#readme";

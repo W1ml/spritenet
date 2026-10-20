@@ -100,7 +100,7 @@
   "pages": {
     "home": {
       "title": "Home",
-      "quickSettings": "Quick setting options",
+      "quickSettings": "Quick settings",
       "support": "Support",
       "supportHint": "Keys, payment and help in our Telegram bot",
       "subscription": "Subscription",
@@ -196,6 +196,12 @@
     },
     "settings": {
       "title": "Settings",
+      "connectionGroup": "Connection",
+      "appGroup": "App",
+      "generalHint": "Language, notifications, battery",
+      "routingHint": "Region, bypass and rules",
+      "dnsHint": "DNS servers and resolving",
+      "aboutHint": "Version, license, support",
       "resetTunnel": "Reset VPN profile",
       "options": {
         "import": {
@@ -648,7 +654,7 @@
       "msg": "Get your personal SpriteNet key in our Telegram bot, then open the link from the bot or paste the key here.",
       "helpBtn": {
         "label": "Open Telegram bot",
-        "url": "https://t.me/DsitWork"
+        "url": "https://t.me/absolute_popi_bot"
       }
     },
     "unknownDomainsWarning": {

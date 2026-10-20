@@ -104,7 +104,7 @@
   "pages": {
     "home": {
       "title": "Главная",
-      "quickSettings": "Опции быстрых настроек",
+      "quickSettings": "Быстрые настройки",
       "support": "Поддержка",
       "supportHint": "Ключи, оплата и помощь в нашем Telegram-боте",
       "subscription": "Подписка",
@@ -200,6 +200,12 @@
     },
     "settings": {
       "title": "Настройки",
+      "connectionGroup": "Подключение",
+      "appGroup": "Приложение",
+      "generalHint": "Язык, уведомления, батарея",
+      "routingHint": "Регион, обход и правила",
+      "dnsHint": "DNS-серверы и разрешение имён",
+      "aboutHint": "Версия, лицензия, поддержка",
       "resetTunnel": "Сбросить профиль VPN",
       "options": {
         "import": {
@@ -652,7 +658,7 @@
       "msg": "Получите персональный ключ SpriteNet в нашем Telegram-боте, затем откройте ссылку из бота или вставьте ключ сюда.",
       "helpBtn": {
         "label": "Открыть Telegram-бот",
-        "url": "https://t.me/DsitWork"
+        "url": "https://t.me/absolute_popi_bot"
       }
     },
     "unknownDomainsWarning": {

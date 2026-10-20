@@ -15,8 +15,8 @@ ROOT = Path(__file__).resolve().parent.parent
 RES = ROOT / "android/app/src/main/res"
 
 CANVAS = "#0F0F11"
-LIME = "#8DFF19"
-LIME_LIGHT = "#C7FF55"
+LIME = "#74D414"
+LIME_LIGHT = "#A3E553"
 
 # Logo geometry, in the local coordinates of spritenet_icon.svg (inside translate(100 120)).
 LINES = ["M175,12 L38,90 L175,168", "M115,78 L245,151 L115,226"]
