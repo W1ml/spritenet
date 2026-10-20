@@ -1,7 +1,7 @@
 # SpriteNet VPN (Android)
 
 SpriteNet is an Android VPN client for VLESS Reality subscriptions served by a 3X-UI panel.
-Keys, billing and support are handled by the Telegram bot [@DsitWork](https://t.me/DsitWork);
+Keys, billing and support are handled by the Telegram bot [@absolute_popi_bot](https://t.me/absolute_popi_bot);
 the app only imports the subscription, keeps it up to date and holds the tunnel.
 
 ## Based on Hiddify
@@ -16,7 +16,7 @@ the sing-box integration and the original UI goes to the Hiddify team.
 - SpriteNet branding: name, adaptive and monochrome launcher icon, notification icon, splash screen, TV banner
   and in-app logo, all generated from [`branding/spritenet_icon.svg`](branding/spritenet_icon.svg) by
   [`branding/generate_icons.py`](branding/generate_icons.py).
-- Dark-only "Deep Matte" theme: canvas `#0F0F11`, cards `#18181C`, lime accent `#8DFF19`, alert `#EF4444`.
+- Dark-only "Deep Matte" theme: canvas `#0F0F11`, cards `#18181C`, lime accent `#74D414`, alert `#EF4444`.
   The theme mode picker is removed.
 - Own home screen layout: "spriteNet" wordmark in Russo One with the version pill, subscription card
   (traffic bar, days left, refresh), power button with idle, connecting, connected and error states,

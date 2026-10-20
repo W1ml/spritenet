@@ -10,8 +10,8 @@ abstract class SpriteNetColors {
   static const surface = Color(0xFF18181C);
   static const surfaceHigh = Color(0xFF222228);
   static const outline = Color(0xFF2E2E36);
-  static const lime = Color(0xFF8DFF19);
-  static const limeLight = Color(0xFFC7FF55);
+  static const lime = Color(0xFF74D414);
+  static const limeLight = Color(0xFFA3E553);
   static const onLime = Color(0xFF0F0F11);
   static const alert = Color(0xFFEF4444);
   static const textPrimary = Color(0xFFF2F2F5);
@@ -30,7 +30,7 @@ class AppTheme {
     brightness: Brightness.dark,
     primary: SpriteNetColors.lime,
     onPrimary: SpriteNetColors.onLime,
-    primaryContainer: Color(0xFF2A3D12),
+    primaryContainer: Color(0xFF243510),
     onPrimaryContainer: SpriteNetColors.limeLight,
     secondary: SpriteNetColors.lime,
     onSecondary: SpriteNetColors.onLime,
@@ -110,7 +110,7 @@ class AppTheme {
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: SpriteNetColors.surface,
         surfaceTintColor: Colors.transparent,
-        indicatorColor: const Color(0xFF2A3D12),
+        indicatorColor: const Color(0xFF243510),
         indicatorShape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
         height: 68,
         labelTextStyle: WidgetStateProperty.resolveWith(
@@ -128,7 +128,7 @@ class AppTheme {
       ),
       navigationRailTheme: const NavigationRailThemeData(
         backgroundColor: SpriteNetColors.surface,
-        indicatorColor: Color(0xFF2A3D12),
+        indicatorColor: Color(0xFF243510),
       ),
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith(
@@ -139,6 +139,27 @@ class AppTheme {
         ),
       ),
       dividerColor: SpriteNetColors.outline,
+      dividerTheme: const DividerThemeData(color: SpriteNetColors.outline, space: 1),
+      menuTheme: const MenuThemeData(
+        style: MenuStyle(
+          backgroundColor: WidgetStatePropertyAll(SpriteNetColors.surfaceHigh),
+          surfaceTintColor: WidgetStatePropertyAll(Colors.transparent),
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(14)),
+              side: BorderSide(color: SpriteNetColors.outline),
+            ),
+          ),
+        ),
+      ),
+      popupMenuTheme: const PopupMenuThemeData(
+        color: SpriteNetColors.surfaceHigh,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(14)),
+          side: BorderSide(color: SpriteNetColors.outline),
+        ),
+      ),
       extensions: const <ThemeExtension<dynamic>>{ConnectionButtonTheme.spriteNet},
     );
   }

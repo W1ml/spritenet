@@ -7,6 +7,7 @@ import 'package:hiddify/core/model/constants.dart';
 import 'package:hiddify/core/router/adaptive_layout/shell_route_action.dart';
 import 'package:hiddify/core/router/go_router/helper/active_breakpoint_notifier.dart';
 import 'package:hiddify/core/router/go_router/routing_config_notifier.dart';
+import 'package:hiddify/core/theme/app_theme.dart';
 import 'package:hiddify/features/stats/widget/side_bar_stats_overview.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -82,10 +83,10 @@ class MyAdaptiveLayout extends HookConsumerWidget {
         bottomNavigationBar: isMobileBreakpoint
             ? FocusScope(
                 node: navScopeNode,
-                child: NavigationBar(
+                child: _SpriteNavBar(
                   selectedIndex: navigationShell.currentIndex <= 1 ? navigationShell.currentIndex : 0,
-                  destinations: _navDests(_actions(t, showProfilesAction, isMobileBreakpoint)),
-                  onDestinationSelected: (index) => _onTap(context, index),
+                  actions: _actions(t, showProfilesAction, isMobileBreakpoint),
+                  onSelected: (index) => _onTap(context, index),
                 ),
               )
             : null,
@@ -106,8 +107,100 @@ class MyAdaptiveLayout extends HookConsumerWidget {
     if (!isMobileBreakpoint) ShellRouteAction(Icons.info_rounded, t.pages.about.title),
   ];
 
-  List<NavigationDestination> _navDests(List<ShellRouteAction> actions) =>
-      actions.map((e) => NavigationDestination(icon: Icon(e.icon), label: e.title)).toList();
   List<NavigationRailDestination> _navRailDests(List<ShellRouteAction> actions) =>
       actions.map((e) => NavigationRailDestination(icon: Icon(e.icon), label: Text(e.title))).toList();
+}
+
+/// SpriteNet bottom navigation: a floating rounded bar where the selected item expands
+/// into a lime pill with its label, the others show only their icon.
+class _SpriteNavBar extends StatelessWidget {
+  const _SpriteNavBar({required this.selectedIndex, required this.actions, required this.onSelected});
+
+  final int selectedIndex;
+  final List<ShellRouteAction> actions;
+  final ValueChanged<int> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      minimum: const EdgeInsets.fromLTRB(16, 4, 16, 12),
+      child: Container(
+        height: 60,
+        padding: const EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          color: SpriteNetColors.surface,
+          borderRadius: BorderRadius.circular(22),
+          border: Border.all(color: SpriteNetColors.outline),
+          boxShadow: const [BoxShadow(color: Colors.black54, blurRadius: 18, offset: Offset(0, 6))],
+        ),
+        child: Row(
+          children: [
+            for (final (index, action) in actions.indexed)
+              Expanded(
+                flex: index == selectedIndex ? 3 : 2,
+                child: _SpriteNavItem(
+                  action: action,
+                  selected: index == selectedIndex,
+                  onTap: () => onSelected(index),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SpriteNavItem extends StatelessWidget {
+  const _SpriteNavItem({required this.action, required this.selected, required this.onTap});
+
+  final ShellRouteAction action;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = selected ? SpriteNetColors.onLime : SpriteNetColors.textSecondary;
+    return Semantics(
+      selected: selected,
+      button: true,
+      label: action.title,
+      excludeSemantics: true,
+      child: Tooltip(
+        message: action.title,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(16),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 220),
+              curve: Curves.easeOutCubic,
+              decoration: BoxDecoration(
+                color: selected ? SpriteNetColors.lime : Colors.transparent,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(action.icon, color: color, size: 22),
+                  if (selected) ...[
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        action.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: color, fontWeight: FontWeight.w700, fontSize: 14),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

@@ -13,10 +13,13 @@ import 'package:hiddify/core/localization/translations.dart';
 import 'package:hiddify/core/model/constants.dart';
 import 'package:hiddify/core/model/region.dart';
 import 'package:hiddify/core/preferences/general_preferences.dart';
+import 'package:hiddify/core/theme/app_theme.dart';
+import 'package:hiddify/core/widget/dot_grid_background.dart';
 import 'package:hiddify/features/common/general_pref_tiles.dart';
 import 'package:hiddify/features/settings/data/config_option_repository.dart';
 import 'package:hiddify/features/settings/widget/preference_tile.dart';
 import 'package:hiddify/gen/assets.gen.dart';
+import 'package:hiddify/gen/fonts.gen.dart';
 import 'package:hiddify/utils/utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -64,130 +67,190 @@ class IntroPage extends HookConsumerWidget with PresLogger {
       return null;
     }, []);
 
+    TextStyle linkStyle(String key) => TextStyle(
+      color: focusStates[key]!.value ? SpriteNetColors.limeLight : SpriteNetColors.lime,
+      decoration: TextDecoration.underline,
+      decorationColor: SpriteNetColors.lime.withValues(alpha: .5),
+    );
+
     return Scaffold(
-      body: Center(
-        child: ScrollConfiguration(
-          behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-          child: SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 620),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      final width = constraints.maxWidth > IntroConst.maxwidth
-                          ? IntroConst.maxwidth
-                          : constraints.maxWidth;
-                      final size = width * 0.4;
-                      return Assets.images.logo.svg(width: size, height: size);
-                    },
-                  ),
-                  const Gap(16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      t.intro.banner,
-                      style: theme.textTheme.bodyLarge,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  const Gap(24),
-                  const LocalePrefTile(),
-                  ChoicePreferenceWidget(
-                    selected: ref.watch(ConfigOptions.region),
-                    preferences: ref.watch(ConfigOptions.region.notifier),
-                    choices: Region.values,
-                    title: t.pages.settings.routing.generalOptions.region,
-                    showFlag: true,
-                    icon: Icons.place_rounded,
-                    presentChoice: (value) => value.present(t),
-                    onChanged: (val) async {
-                      await ref.read(ConfigOptions.directDnsAddress.notifier).reset();
-                    },
-                  ),
-                  const EnableAnalyticsPrefTile(),
-                  const Gap(24),
-                  Focus(
-                    focusNode: focusNodes[IntroConst.termsAndConditionsKey],
-                    onKeyEvent: (node, event) => _handleKeyEvent(event, IntroConst.termsAndConditionsKey),
-                    child: Text.rich(
-                      t.intro.termsAndPolicyCaution(
-                        tap: (text) => TextSpan(
-                          text: text,
-                          style: TextStyle(
-                            color: focusStates[IntroConst.termsAndConditionsKey]!.value ? Colors.green : Colors.blue,
+      body: DotGridBackground(
+        glowCenter: const Alignment(0, -.55),
+        child: SafeArea(
+          child: Center(
+            child: ScrollConfiguration(
+              behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 520),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Gap(32),
+                      Container(
+                        width: 112,
+                        height: 112,
+                        padding: const EdgeInsets.all(22),
+                        decoration: BoxDecoration(
+                          color: SpriteNetColors.surface,
+                          borderRadius: BorderRadius.circular(32),
+                          border: Border.all(color: SpriteNetColors.lime.withValues(alpha: .35)),
+                          boxShadow: [
+                            BoxShadow(color: SpriteNetColors.lime.withValues(alpha: .12), blurRadius: 32),
+                          ],
+                        ),
+                        child: Assets.images.logo.svg(),
+                      ),
+                      const Gap(20),
+                      const Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(text: "sprite", style: TextStyle(color: SpriteNetColors.textPrimary)),
+                            TextSpan(text: "Net", style: TextStyle(color: SpriteNetColors.lime)),
+                          ],
+                        ),
+                        style: TextStyle(fontFamily: FontFamily.russoOne, fontSize: 34, letterSpacing: .5),
+                      ),
+                      const Gap(8),
+                      Text(
+                        t.intro.banner,
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyMedium?.copyWith(color: SpriteNetColors.textSecondary),
+                      ),
+                      const Gap(28),
+                      Container(
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          color: SpriteNetColors.surface,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: SpriteNetColors.outline),
+                        ),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Column(
+                            children: [
+                              const LocalePrefTile(),
+                              const Divider(height: 1, indent: 16, endIndent: 16),
+                              ChoicePreferenceWidget(
+                                selected: ref.watch(ConfigOptions.region),
+                                preferences: ref.watch(ConfigOptions.region.notifier),
+                                choices: Region.values,
+                                title: t.pages.settings.routing.generalOptions.region,
+                                showFlag: true,
+                                icon: Icons.place_rounded,
+                                presentChoice: (value) => value.present(t),
+                                onChanged: (val) async {
+                                  await ref.read(ConfigOptions.directDnsAddress.notifier).reset();
+                                },
+                              ),
+                            ],
                           ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () async {
-                              await UriUtils.tryLaunch(Uri.parse(Constants.termsAndConditionsUrl));
-                            },
                         ),
                       ),
-                      style: theme.textTheme.bodySmall,
-                    ),
-                  ),
-                  const Gap(8),
-                  Focus(
-                    focusNode: focusNodes[IntroConst.githubKey],
-                    onKeyEvent: (node, event) => _handleKeyEvent(event, IntroConst.githubKey),
-                    child: Text.rich(
-                      t.intro.info(
-                        tap_source: (text) => TextSpan(
-                          text: text,
-                          style: TextStyle(
-                            color: focusStates[IntroConst.githubKey]!.value ? Colors.green : Colors.blue,
+                      const Gap(24),
+                      Focus(
+                        focusNode: focusNodes[IntroConst.termsAndConditionsKey],
+                        onKeyEvent: (node, event) => _handleKeyEvent(event, IntroConst.termsAndConditionsKey),
+                        child: Text.rich(
+                          t.intro.termsAndPolicyCaution(
+                            tap: (text) => TextSpan(
+                              text: text,
+                              style: linkStyle(IntroConst.termsAndConditionsKey),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () async {
+                                  await UriUtils.tryLaunch(Uri.parse(Constants.termsAndConditionsUrl));
+                                },
+                            ),
                           ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () async {
-                              await UriUtils.tryLaunch(Uri.parse(Constants.githubUrl));
-                            },
-                        ),
-                        tap_license: (text) => TextSpan(
-                          text: text,
-                          style: TextStyle(
-                            color: focusStates[IntroConst.githubKey]!.value ? Colors.green : Colors.blue,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () async {
-                              await UriUtils.tryLaunch(Uri.parse(Constants.licenseUrl));
-                            },
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodySmall?.copyWith(color: SpriteNetColors.textSecondary),
                         ),
                       ),
-                      style: theme.textTheme.bodySmall,
-                    ),
+                      const Gap(6),
+                      Focus(
+                        focusNode: focusNodes[IntroConst.githubKey],
+                        onKeyEvent: (node, event) => _handleKeyEvent(event, IntroConst.githubKey),
+                        child: Text.rich(
+                          t.intro.info(
+                            tap_source: (text) => TextSpan(
+                              text: text,
+                              style: linkStyle(IntroConst.githubKey),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () async {
+                                  await UriUtils.tryLaunch(Uri.parse(Constants.githubUrl));
+                                },
+                            ),
+                            tap_license: (text) => TextSpan(
+                              text: text,
+                              style: linkStyle(IntroConst.githubKey),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () async {
+                                  await UriUtils.tryLaunch(Uri.parse(Constants.licenseUrl));
+                                },
+                            ),
+                          ),
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodySmall?.copyWith(color: SpriteNetColors.textSecondary),
+                        ),
+                      ),
+                      // only for managing license node focus
+                      Focus(
+                        focusNode: focusNodes[IntroConst.licenseKey],
+                        onKeyEvent: (node, event) => _handleKeyEvent(event, IntroConst.licenseKey),
+                        child: const Gap(24),
+                      ),
+                    ],
                   ),
-                  // only for managing license node focus
-                  Focus(
-                    focusNode: focusNodes[IntroConst.licenseKey],
-                    onKeyEvent: (node, event) => _handleKeyEvent(event, IntroConst.licenseKey),
-                    child: const Gap(88),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        icon: isStarting.value
-            ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator())
-            : const Icon(Icons.rocket_launch),
-        label: Text(t.common.start, style: theme.textTheme.titleMedium),
-        onPressed: () async {
-          if (isStarting.value) return;
-          isStarting.value = true;
-          if (!ref.read(analyticsControllerProvider).requireValue) {
-            loggy.info("disabling analytics per user request");
-            try {
-              await ref.read(analyticsControllerProvider.notifier).disableAnalytics();
-            } catch (error, stackTrace) {
-              loggy.error("could not disable analytics", error, stackTrace);
-            }
-          }
-          await ref.read(Preferences.introCompleted.notifier).update(true);
-        },
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+        child: SizedBox(
+          height: 56,
+          child: FilledButton(
+            key: const ValueKey("intro_start"),
+            style: FilledButton.styleFrom(
+              backgroundColor: SpriteNetColors.lime,
+              foregroundColor: SpriteNetColors.onLime,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+            ),
+            onPressed: () async {
+              if (isStarting.value) return;
+              isStarting.value = true;
+              // SpriteNet: analytics are off by default and the opt-in is not offered on this screen.
+              if (!ref.read(analyticsControllerProvider).requireValue) {
+                loggy.info("analytics disabled");
+                try {
+                  await ref.read(analyticsControllerProvider.notifier).disableAnalytics();
+                } catch (error, stackTrace) {
+                  loggy.error("could not disable analytics", error, stackTrace);
+                }
+              }
+              await ref.read(Preferences.introCompleted.notifier).update(true);
+            },
+            child: isStarting.value
+                ? const SizedBox.square(
+                    dimension: 22,
+                    child: CircularProgressIndicator(strokeWidth: 2.5, color: SpriteNetColors.onLime),
+                  )
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        t.common.start.toUpperCase(),
+                        style: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1.4, fontSize: 16),
+                      ),
+                      const Gap(8),
+                      const Icon(Icons.arrow_forward_rounded),
+                    ],
+                  ),
+          ),
+        ),
       ),
     );
   }

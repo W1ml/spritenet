@@ -7,6 +7,4 @@
 | [SpriteNet-Android-x86_64.apk](https://github.com/W1ml/spritenet/releases/download/RELEASE_TAG/SpriteNet-Android-x86_64.apk) | Эмуляторы и x86-устройства |
 | [SpriteNet-Android-universal.apk](https://github.com/W1ml/spritenet/releases/download/RELEASE_TAG/SpriteNet-Android-universal.apk) | Если не знаете, какой выбрать |
 
-Ключ доступа и поддержка: [@DsitWork](https://t.me/DsitWork).
-
-SpriteNet основан на [Hiddify](https://github.com/hiddify/hiddify-app) и распространяется по его лицензии.
+Ключ доступа и поддержка: [@absolute_popi_bot](https://t.me/absolute_popi_bot).

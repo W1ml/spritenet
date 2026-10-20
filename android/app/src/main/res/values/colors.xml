@@ -3,6 +3,6 @@
     <!-- SpriteNet "Dark Matte Neon" palette -->
     <color name="spritenet_canvas">#0F0F11</color>
     <color name="spritenet_surface">#18181C</color>
-    <color name="spritenet_lime">#8DFF19</color>
+    <color name="spritenet_lime">#74D414</color>
     <color name="spritenet_alert">#EF4444</color>
 </resources>
