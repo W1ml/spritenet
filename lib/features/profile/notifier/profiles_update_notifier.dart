@@ -49,6 +49,14 @@ class ForegroundProfilesUpdateNotifier extends _$ForegroundProfilesUpdateNotifie
   NeatPeriodicTaskScheduler? _scheduler;
   bool _forceNextRun = false;
 
+  /// Runs a regular (non-forced) update cycle now, e.g. when the app returns to the foreground.
+  /// Each profile is still only fetched once its update interval has passed.
+  Future<void> checkNow() async {
+    if (!ref.read(Preferences.introCompleted)) return;
+    loggy.debug("checking for stale profiles");
+    await _scheduler?.trigger();
+  }
+
   Future<void> trigger() async {
     loggy.debug("triggering update");
     _forceNextRun = true;
