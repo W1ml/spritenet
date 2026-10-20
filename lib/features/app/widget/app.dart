@@ -43,6 +43,8 @@ class App extends HookConsumerWidget with WidgetsBindingObserver, PresLogger {
   void onResume(WidgetRef ref) {
     // if (PlatformUtils.isDesktop) return;
     ref.read(hiddifyCoreServiceProvider).init();
+    // SpriteNet: refresh subscriptions that went stale while the app was in the background.
+    ref.read(foregroundProfilesUpdateNotifierProvider.notifier).checkNow();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (isOnPauseCalled && PlatformUtils.isAndroid) ref.invalidate(perAppProxyServiceProvider);

@@ -8,6 +8,7 @@ import 'package:hiddify/features/connection/data/connection_data_providers.dart'
 import 'package:hiddify/features/connection/data/connection_repository.dart';
 import 'package:hiddify/features/connection/model/connection_failure.dart';
 import 'package:hiddify/features/connection/model/connection_status.dart';
+import 'package:hiddify/features/profile/data/profile_data_providers.dart';
 import 'package:hiddify/features/profile/model/profile_entity.dart';
 import 'package:hiddify/features/profile/notifier/active_profile_notifier.dart';
 import 'package:hiddify/hiddifycore/init_signal.dart';
@@ -136,11 +137,12 @@ class ConnectionNotifier extends _$ConnectionNotifier with AppLogger {
   }
 
   Future<void> _connectThrottled() async {
-    final activeProfile = await ref.read(activeProfileProvider.future);
+    var activeProfile = await ref.read(activeProfileProvider.future);
     if (activeProfile == null) {
       loggy.info("no active profile, not connecting");
       return;
     }
+    activeProfile = await _refreshIfStale(activeProfile);
     await _connectionRepo.connect(activeProfile, ref.read(Preferences.disableMemoryLimit)).mapLeft((
       ConnectionFailure err,
     ) async {
@@ -156,6 +158,31 @@ class ConnectionNotifier extends _$ConnectionNotifier with AppLogger {
       await ref.read(Preferences.startedByUser.notifier).update(false);
       state = AsyncError(err, StackTrace.current);
     }).run();
+  }
+
+  static const _refreshBeforeConnectTimeout = Duration(seconds: 8);
+
+  /// SpriteNet: if the active subscription is past its update interval (12h by default), fetch it
+  /// before connecting, so port or key changes made in 3X-UI apply without re-adding the profile.
+  /// On failure or timeout the cached config is used, so a slow panel never blocks connecting.
+  Future<ProfileEntity> _refreshIfStale(ProfileEntity profile) async {
+    if (profile is! RemoteProfileEntity) return profile;
+    final interval = profile.options?.updateInterval;
+    if (interval == null || interval <= Duration.zero) return profile;
+    if (DateTime.now().difference(profile.lastUpdate) < interval) return profile;
+
+    loggy.info("active profile is stale (last update: ${profile.lastUpdate}), refreshing before connect");
+    try {
+      final repo = await ref.read(profileRepositoryProvider.future);
+      final result = await repo.upsertRemote(profile.url).run().timeout(_refreshBeforeConnectTimeout);
+      return await result.match((failure) {
+        loggy.warning("refresh before connect failed, using cached config", failure);
+        return profile;
+      }, (_) async => (await repo.getById(profile.id).run()).toNullable() ?? profile);
+    } catch (e) {
+      loggy.warning("refresh before connect timed out, using cached config", e);
+      return profile;
+    }
   }
 
   Future<void> _disconnect() async {
