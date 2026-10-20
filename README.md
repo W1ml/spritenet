@@ -18,8 +18,10 @@ the sing-box integration and the original UI goes to the Hiddify team.
   [`branding/generate_icons.py`](branding/generate_icons.py).
 - Dark-only "Deep Matte" theme: canvas `#0F0F11`, cards `#18181C`, lime accent `#8DFF19`, alert `#EF4444`.
   The theme mode picker is removed.
-- New power button with idle, connecting, connected and error states; latency and live download/upload
-  speed on the home screen; fixed Support button that opens the Telegram bot.
+- Own home screen layout: "spriteNet" wordmark in Russo One with the version pill, subscription card
+  (traffic bar, days left, refresh), power button with idle, connecting, connected and error states,
+  ping / download / upload tiles, server card, and a bottom row with the Telegram Support button and
+  quick settings. Russo One is bundled under the SIL Open Font License (`assets/fonts/RussoOne-OFL.txt`).
 - Deep links `spritenet://import?url=<subscription>&name=<name>` (legacy `hiddify://` links are still parsed
   when pasted).
 - Subscriptions refresh every 12 hours unless the panel sends `profile-update-interval`.

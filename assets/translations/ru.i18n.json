@@ -106,7 +106,10 @@
       "title": "Главная",
       "quickSettings": "Опции быстрых настроек",
       "support": "Поддержка",
-      "supportHint": "Ключи, оплата и помощь в нашем Telegram-боте"
+      "supportHint": "Ключи, оплата и помощь в нашем Telegram-боте",
+      "subscription": "Подписка",
+      "ping": "Пинг",
+      "server": "Сервер"
     },
     "proxies": {
       "title": "Прокси",
